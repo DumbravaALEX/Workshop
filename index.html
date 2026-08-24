@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ro" data-theme="night">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HUB DIGITAL — Competențe Practice de Digitalizare, OCR și Arhivare</title>
+<meta name="description" content="Curs complet de competențe digitale: digitalizare, OCR și gestionarea datelor pentru micro-antreprenori și sectorul asociativ.">
+<meta name="author" content="Alexandru Dumbrava">
+<style>
+/* ============================================================
+   AGORA — design system (păstrat conform șablonului original)
+   ============================================================ */
+:root{
+  --bg:            #0a0e1a;
+  --bg-2:          #0d1220;
+  --panel:         #121a2c;
+  --panel-2:       #182338;
+  --panel-3:       #1e2b45;
+  --border:        #2a3652;
+  --border-soft:   #202c46;
+  --gold:          #c9a24c;
+  --gold-bright:   #e6c978;
+  --gold-dim:      #8a7038;
+  --verdigris:     #5fa596;
+  --verdigris-dim: #3f6f66;
+  --vermilion:     #c06547;
+  --vermilion-bright: #cb8169;
+  --text:          #ece6d8;
+  --text-2:        #b8b2a0;
+  --text-faint:    #767a86;
+  --shadow:        0 8px 28px rgba(0,0,0,.45);
+
+  --font-display: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Noto Serif",ui-serif,serif;
+  --font-body: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --font-mono: "SF Mono",SFMono-Regular,Consolas,"Liberation Mono",Menlo,monospace;
+
+  --radius-s: 6px;
+  --radius-m: 12px;
+  --radius-l: 20px;
+  --sidebar-w: 296px;
+}
+
+html[data-theme="day"]{
+  --bg:            #ede3c8;
+  --bg-2:          #f3ead2;
+  --panel:         #faf3e1;
+  --panel-2:       #f2e8cd;
+  --panel-3:       #eadfc0;
+  --border:        #cdbb8e;
+  --border-soft:   #ddceab;
+  --gold:          #9c6f1e;
+  --gold-bright:   #7a5716;
+  --gold-dim:      #b68f45;
+  --verdigris:     #3a7a6c;
+  --verdigris-dim: #2b5c51;
+  --vermilion:     #9c3f28;
+  --vermilion-bright: #9c3f28;
+  --text:          #2a2013;
+  --text-2:        #56492f;
+  --text-faint:    #7c6f4f;
+  --shadow:        0 8px 24px rgba(90,70,30,.18);
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(1100px 700px at 85% -10%, color-mix(in srgb, var(--verdigris) 8%, transparent), transparent),
+    radial-gradient(900px 600px at -10% 10%, color-mix(in srgb, var(--gold) 7%, transparent), transparent);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-size:15.5px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  transition:background .4s ease,color .3s ease;
+}
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  font-weight:600;
+  letter-spacing:.01em;
+  color:var(--text);
+  margin:0 0 .5em;
+}
+a{color:var(--verdigris);}
+a:hover{color:var(--gold);}
+::selection{background:var(--gold);color:var(--bg);}
+
+button, input, select, textarea{font-family:inherit;color:inherit;}
+button{cursor:pointer;}
+:focus-visible{outline:2px solid var(--gold-bright);outline-offset:2px;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important;}
+}
+
+/* ---------------- layout general ---------------- */
+.app{display:flex;min-height:100vh;}
+
+.sidebar{
+  width:var(--sidebar-w);
+  flex:0 0 auto;
+  background:linear-gradient(180deg, var(--panel), var(--bg-2));
+  border-right:1px solid var(--border-soft);
+  position:sticky;top:0;
+  height:100vh;
+  overflow-y:auto;
+  display:flex;flex-direction:column;
+  z-index:40;
+}
+.sidebar::-webkit-scrollbar{width:8px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+.brand{
+  padding:22px 20px 16px;
+  border-bottom:1px solid var(--border-soft);
+}
+.brand-mark{
+  display:flex;align-items:center;gap:10px;
+}
+.brand-emblem{
+  width:40px;height:40px;flex:0 0 auto;
+}
+.brand-title{
+  font-family:var(--font-display);
+  font-size:22px;font-weight:700;letter-spacing:.06em;
+  color:var(--gold-bright);
+  line-height:1.1;
+}
+.brand-sub{
+  font-size:11px;color:var(--text-2);
+  letter-spacing:.08em;text-transform:uppercase;
+  margin-top:5px;
+}
+.brand-author{
+  font-size:11.5px;color:var(--verdigris);
+  margin-top:9px;letter-spacing:.02em;
+}
+
+.searchbox{margin:14px 20px 4px;position:relative;}
+.searchbox input{
+  width:100%;padding:9px 12px 9px 30px;
+  background:var(--panel-2);border:1px solid var(--border);
+  border-radius:var(--radius-s);color:var(--text);font-size:13px;
+}
+.searchbox input::placeholder{color:var(--text-2);}
+.searchbox svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);width:14px;height:14px;stroke:var(--text-faint);}
+
+nav.navgroups{padding:8px 10px 18px;flex:1;}
+.navgroup{margin:12px 0;}
+.navgroup-label{
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--gold-dim);padding:6px 10px 4px;font-weight:700;
+}
+.navitem{
+  display:flex;align-items:center;gap:9px;
+  width:100%;text-align:left;padding:9px 10px;
+  border:none;background:transparent;border-radius:var(--radius-s);
+  color:var(--text-2);font-size:13.5px;
+  transition:background .15s, color .15s;
+  min-height:38px;
+  text-decoration:none;cursor:pointer;box-sizing:border-box;
+}
+.navitem:hover{background:var(--panel-2);color:var(--text);}
+.navitem.active{background:var(--panel-3);color:var(--gold-bright);font-weight:600;}
+.navitem .dot{width:5px;height:5px;border-radius:50%;background:var(--border);flex:0 0 auto;}
+.navitem.active .dot{background:var(--gold);}
+
+.sidebar-foot{
+  padding:14px 20px 18px;border-top:1px solid var(--border-soft);
+  display:flex;gap:8px;
+}
+.theme-toggle{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:7px;
+  padding:8px;border-radius:var(--radius-s);
+  background:var(--panel-2);border:1px solid var(--border);
+  color:var(--text-2);font-size:12.5px;
+}
+.theme-toggle:hover{color:var(--gold-bright);border-color:var(--gold-dim);}
+.theme-toggle svg{width:14px;height:14px;}
+
+.mobile-topbar{display:none;}
+
+main.content{flex:1;min-width:0;padding:40px 48px 90px;max-width:980px;margin:0 auto;}
+.section{display:none;}
+.section.active{display:block;animation:fadein .35s ease;}
+@keyframes fadein{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+.eyebrow{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--verdigris);margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--verdigris);}
+
+.section h1.title{font-size:32px;margin-bottom:6px;}
+.section .lede{font-size:16px;color:var(--text-2);max-width:66ch;margin-bottom:28px;}
+
+/* ---------------- carduri / plăci ---------------- */
+.plate{
+  background:var(--panel);border:1px solid var(--border-soft);
+  border-radius:var(--radius-m);padding:22px 24px;margin-bottom:18px;
+  box-shadow:var(--shadow);
+}
+.plate h2{font-size:18px;color:var(--gold-bright);}
+.plate h2 .num{font-family:var(--font-mono);color:var(--verdigris);margin-right:8px;font-size:14px;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:760px){.grid-2{grid-template-columns:1fr;}}
+
+blockquote.callout{
+  border-left:3px solid var(--gold);
+  margin:18px 0;padding:4px 18px;
+  background:var(--panel-2);border-radius:0 var(--radius-s) var(--radius-s) 0;
+  color:var(--text-2);font-size:14.5px;
+}
+blockquote.callout strong{color:var(--text);}
+blockquote.warn{border-left-color:var(--vermilion);}
+blockquote.warn strong{color:var(--vermilion-bright);}
+
+table.data{width:100%;border-collapse:collapse;font-size:13.5px;}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0;}
+.table-scroll table.data{margin:0;}
+table.data th{
+  text-align:left;font-family:var(--font-mono);font-size:11px;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--text-2);
+  padding:8px 10px;border-bottom:1px solid var(--border);
+}
+table.data td{padding:9px 10px;border-bottom:1px solid var(--border-soft);}
+table.data tr:last-child td{border-bottom:none;}
+table.data tr:hover td{background:var(--panel-2);}
+
+/* ---------------- linia de timp ---------------- */
+.timeline{position:relative;margin:20px 0;padding-left:26px;}
+.timeline::before{content:"";position:absolute;left:6px;top:4px;bottom:4px;width:2px;background:linear-gradient(var(--gold-dim),var(--verdigris-dim));}
+.tl-item{position:relative;padding-bottom:24px;}
+.tl-item::before{content:"";position:absolute;left:-26px;top:3px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--gold);}
+.tl-item .yr{font-family:var(--font-mono);color:var(--gold-bright);font-size:13px;letter-spacing:.03em;}
+.tl-item h2{font-size:15.5px;margin:2px 0 4px;}
+.tl-item p{margin:0;color:var(--text-2);font-size:14px;}
+
+@media(max-width:920px){
+  .sidebar{position:fixed;left:0;top:0;max-width:85vw;transform:translateX(-100%);transition:transform .25s ease;box-shadow:0 0 40px rgba(0,0,0,.5);}
+  .sidebar.open{transform:translateX(0);}
+  .mobile-topbar{
+    display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:30;
+    background:var(--panel);border-bottom:1px solid var(--border-soft);padding:12px 16px;
+  }
+  .mobile-topbar button{background:none;border:1px solid var(--border);border-radius:7px;color:var(--text);padding:9px 13px;min-width:40px;min-height:38px;font-size:16px;}
+  main.content{padding:26px 18px 70px;}
+  .section h1.title{font-size:26px;}
+}
+
+/* ---------------- hero / prezentare ---------------- */
+.hero{padding:6px 0 8px;}
+.hero-kicker{font-family:var(--font-mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--verdigris);margin-bottom:14px;}
+.hero h1{font-size:40px;line-height:1.12;margin-bottom:14px;}
+.hero h1 em{font-style:normal;color:var(--gold-bright);}
+.hero .lede{font-size:17px;max-width:62ch;}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px 26px;margin:22px 0 30px;padding:16px 0;border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft);}
+.hero-meta div{font-size:12.5px;color:var(--text-2);}
+.hero-meta strong{display:block;color:var(--text);font-size:14.5px;font-weight:600;margin-top:2px;}
+
+.flowline{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:22px 0 8px;}
+.flowline .fl-node{background:var(--panel);border:1px solid var(--border);border-radius:999px;padding:8px 16px;font-size:12.5px;color:var(--text-2);white-space:nowrap;}
+.flowline .fl-arrow{color:var(--gold-dim);font-size:15px;}
+
+.day-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:8px;}
+.day-card{
+  display:block;background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--radius-m);
+  padding:16px 18px;cursor:pointer;text-align:left;transition:border-color .15s, transform .15s;
+  text-decoration:none;color:inherit;
+}
+.day-card:hover{border-color:var(--gold-dim);transform:translateY(-2px);}
+.day-card .dn{font-family:var(--font-mono);color:var(--gold);font-size:12px;letter-spacing:.08em;}
+.day-card .dt{font-size:14.5px;color:var(--text);margin-top:5px;font-weight:600;line-height:1.35;}
+.day-card .dk{font-size:11.5px;color:var(--text-2);margin-top:6px;text-transform:uppercase;letter-spacing:.05em;}
+
+/* ---------------- bio ---------------- */
+.bio-card{display:flex;gap:18px;align-items:flex-start;background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--radius-m);padding:22px;box-shadow:var(--shadow);}
+.bio-avatar{width:56px;height:56px;border-radius:50%;background:var(--panel-3);border:1px solid var(--gold-dim);flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);color:var(--gold-bright);font-size:20px;font-weight:700;}
+.bio-card h2{color:var(--gold-bright);margin-bottom:2px;}
+.bio-role{font-size:12.5px;color:var(--verdigris);margin-bottom:10px;}
+.bio-card p{color:var(--text-2);font-size:14.5px;margin:0 0 8px;}
+
+/* ---------------- cerinte ---------------- */
+.req-list{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+.req-list li{display:flex;gap:12px;align-items:flex-start;background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--radius-s);padding:12px 14px;font-size:14px;color:var(--text-2);}
+.req-list .lt{font-family:var(--font-mono);color:var(--gold);font-weight:700;flex:0 0 auto;}
+
+/* ---------------- flux de lucru (flowchart) ---------------- */
+.flowchart{display:flex;flex-wrap:wrap;gap:0;align-items:stretch;margin:18px 0;}
+.fstep{
+  background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--radius-s);
+  padding:12px 14px;font-size:13px;color:var(--text-2);min-width:140px;flex:1 1 140px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.fstep .fn{font-family:var(--font-mono);color:var(--gold-bright);font-size:11px;}
+.farrow{display:flex;align-items:center;justify-content:center;color:var(--verdigris);font-size:16px;flex:0 0 22px;}
+@media(max-width:760px){.farrow{transform:rotate(90deg);flex-basis:100%;padding:2px 0;}}
+.flow-note{font-size:13px;color:var(--text-2);margin-top:10px;font-style:italic;}
+
+/* ---------------- furnizori (grid carduri) ---------------- */
+.provider-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin:18px 0;}
+.provider-card{background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--radius-m);padding:18px 20px;}
+.provider-card h2{font-size:15px;color:var(--gold-bright);margin:0 0 3px;}
+.provider-card .tag{font-family:var(--font-mono);font-size:10.5px;color:var(--verdigris);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:block;}
+.provider-card p{font-size:13.5px;color:var(--text-2);margin:0;line-height:1.6;}
+
+/* ---------------- niveluri semnatura (tiers) ---------------- */
+.tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0;}
+@media(max-width:760px){.tier-grid{grid-template-columns:1fr;}}
+.tier{background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--radius-m);padding:18px;}
+.tier.tier-gold{border-color:var(--gold-dim);background:linear-gradient(180deg,var(--panel-3),var(--panel));}
+.tier .tk{font-family:var(--font-mono);font-size:11px;color:var(--text-2);letter-spacing:.08em;}
+.tier h2{font-size:16px;margin:4px 0 10px;color:var(--text);}
+.tier.tier-gold h2{color:var(--gold-bright);}
+.tier p{font-size:13px;color:var(--text-2);margin:0 0 8px;}
+.tier p strong{color:var(--text);}
+
+/* ---------------- operatori cautare (reference grid) ---------------- */
+.op-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin:16px 0;}
+.op-card{background:var(--panel-2);border:1px solid var(--border-soft);border-radius:var(--radius-s);padding:14px 16px;}
+.op-card h3{font-size:13.5px;color:var(--gold-bright);margin:0 0 6px;}
+.op-card code{display:block;background:var(--bg-2);border:1px solid var(--border-soft);border-radius:6px;padding:6px 9px;font-family:var(--font-mono);font-size:12px;color:var(--verdigris);margin:6px 0;overflow-x:auto;}
+.op-card p{font-size:12.5px;color:var(--text-2);margin:0;}
+
+/* ---------------- resurse / descarcari ---------------- */
+.res-list{list-style:none;margin:0;padding:0;display:grid;gap:10px;}
+.res-list li{background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--radius-s);padding:13px 16px;}
+.res-list .rn{font-size:14.5px;color:var(--text);font-weight:600;}
+.res-list a{font-size:12.5px;word-break:break-all;}
+.res-list .note{font-size:12.5px;color:var(--text-2);margin-top:4px;}
+
+/* ---------------- evaluare ---------------- */
+.eval-item{background:var(--panel);border:1px solid var(--border-soft);border-radius:var(--radius-s);padding:14px 16px;margin-bottom:10px;}
+.eval-item .eq{font-size:13.5px;color:var(--text-2);margin-bottom:8px;}
+.eval-item .en{font-family:var(--font-mono);color:var(--gold);font-size:11px;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+.scale{display:flex;gap:5px;}
+.scale span{width:22px;height:22px;border-radius:5px;background:var(--panel-2);border:1px solid var(--border);font-size:10px;color:var(--text-2);display:flex;align-items:center;justify-content:center;}
+
+/* ---------------- concursuri ---------------- */
+.game-card{background:linear-gradient(160deg,var(--panel-3),var(--panel));border:1px solid var(--border-soft);border-radius:var(--radius-m);padding:20px 22px;margin-bottom:16px;}
+.game-card h2{color:var(--vermilion-bright);font-size:17px;margin-bottom:4px;}
+.game-card .gk{font-family:var(--font-mono);font-size:11px;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.game-card p{font-size:14px;color:var(--text-2);margin:0 0 8px;}
+
+/* ---------------- footer sursa ---------------- */
+.src-note{margin-top:22px;padding-top:14px;border-top:1px dashed var(--border);font-size:11.5px;color:var(--text-2);}
+.src-note strong{color:var(--text-2);}
+
+.fixed-tag{display:inline-block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--verdigris);padding:2px 7px;border-radius:4px;margin-left:8px;vertical-align:middle;}
+
+/* ---------------- utilitare accesibilitate ---------------- */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+
+.skip-link{
+  position:absolute;left:12px;top:-60px;z-index:100;
+  background:var(--gold-bright);color:var(--bg);
+  padding:10px 16px;border-radius:var(--radius-s);
+  font-size:13.5px;font-weight:700;text-decoration:none;
+  transition:top .15s ease;
+}
+.skip-link:focus{top:12px;}
+
+.empty-state{padding:16px 12px;font-size:13px;color:var(--text-2);text-align:center;}
+
+.backdrop{display:none;}
+@media(max-width:920px){
+  .backdrop{
+    display:block;position:fixed;inset:0;background:rgba(0,0,0,.55);
+    z-index:39;opacity:0;pointer-events:none;transition:opacity .2s ease;
+  }
+  .backdrop.show{opacity:1;pointer-events:auto;}
+}
+
+/* ---------------- fallback fara JavaScript (:target) ---------------- */
+.section:target{display:block;}
+
+/* ---------------- print ---------------- */
+@media print{
+  .sidebar, .mobile-topbar, .backdrop, .skip-link{display:none !important;}
+  main.content{max-width:100%;padding:0;margin:0;}
+  .section{display:none !important;}
+  .section:target, .section.active{display:block !important;}
+  body{background:#fff;color:#111;}
+  .plate,.provider-card,.tier,.game-card,.op-card,.day-card,.res-list li,.eval-item{
+    background:#fff;border:1px solid #999;box-shadow:none;break-inside:avoid;
+  }
+  a{color:#111;text-decoration:underline;}
+  .flowchart .farrow{color:#111;}
+}
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#mainContent">Sari la conținut</a>
+<div class="mobile-topbar">
+  <button id="menuToggle" aria-label="Deschide meniul" aria-expanded="false" aria-controls="sidebar">&#9776;</button>
+  <strong style="font-family:var(--font-display);color:var(--gold-bright);letter-spacing:.04em;">HUB DIGITAL</strong>
+</div>
+<div class="backdrop" id="backdrop" hidden></div>
+
+<div class="app">
+  <aside class="sidebar" id="sidebar" aria-label="Navigare curs">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg class="brand-emblem" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <circle cx="24" cy="24" r="21.5" fill="none" stroke="var(--gold)" stroke-width="1.1"/>
+  <path d="M15 12h11l7 7v17a1 1 0 0 1-1 1H15a1 1 0 0 1-1-1V13a1 1 0 0 1 1-1z" fill="none" stroke="var(--verdigris)" stroke-width="1.8"/>
+  <path d="M26 12v7h7" fill="none" stroke="var(--verdigris)" stroke-width="1.8"/>
+  <line x1="16.5" y1="24" x2="29" y2="24" stroke="var(--vermilion)" stroke-width="1.3"/>
+  <line x1="16.5" y1="28" x2="26" y2="28" stroke="var(--gold-bright)" stroke-width="1.1" opacity="0.85"/>
+  <line x1="16.5" y1="32" x2="24" y2="32" stroke="var(--gold-bright)" stroke-width="1.1" opacity="0.6"/>
+</svg>
+        <div>
+          <div class="brand-title">HUB DIGITAL</div>
+          <div class="brand-sub">Digitalizare · OCR · Arhivare</div>
+        </div>
+      </div>
+      <div class="brand-author">Curs de Alexandru Dumbrava</div>
+    </div>
+
+    <div class="searchbox" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <label class="sr-only" for="navSearch">Caută în curs</label>
+      <input type="text" id="navSearch" placeholder="Caută în curs..." autocomplete="off">
+    </div>
+
+    <nav class="navgroups" id="navGroups" aria-label="Cuprinsul cursului">
+      <div class="navgroup" data-group="Prezentare">
+<div class="navgroup-label" id="grp-prezentare">Prezentare</div>
+<a class="navitem active" href="#acasa" data-section="acasa" aria-current="page"><span class="dot" aria-hidden="true"></span>Acasă &amp; traseul cursului</a>
+</div>
+<div class="navgroup" data-group="Traseul cursului · 10 zile">
+<div class="navgroup-label" id="grp-traseul-cursului-·-10-zile">Traseul cursului · 10 zile</div>
+<a class="navitem" href="#modul-00" data-section="modul-00"><span class="dot" aria-hidden="true"></span>Zi 1 — Securitatea datelor</a>
+<a class="navitem" href="#modul-01" data-section="modul-01"><span class="dot" aria-hidden="true"></span>Zi 2 — Pregătirea digitalizării</a>
+<a class="navitem" href="#modul-02" data-section="modul-02"><span class="dot" aria-hidden="true"></span>Zi 3 — Fluxul 1 (practică)</a>
+<a class="navitem" href="#modul-03" data-section="modul-03"><span class="dot" aria-hidden="true"></span>Zi 4 — Fluxul 2 (practică)</a>
+<a class="navitem" href="#modul-04" data-section="modul-04"><span class="dot" aria-hidden="true"></span>Zi 5 — Fluxul 3 (practică)</a>
+<a class="navitem" href="#modul-05" data-section="modul-05"><span class="dot" aria-hidden="true"></span>Zi 6 — Tehnici de organizare</a>
+<a class="navitem" href="#modul-06" data-section="modul-06"><span class="dot" aria-hidden="true"></span>Zi 7 — DocFetcher &amp; arhivare ISO</a>
+<a class="navitem" href="#modul-07" data-section="modul-07"><span class="dot" aria-hidden="true"></span>Zi 8 — Atelier detaliu practică</a>
+<a class="navitem" href="#modul-08" data-section="modul-08"><span class="dot" aria-hidden="true"></span>Zi 9 — Formulare &amp; semnătură</a>
+<a class="navitem" href="#modul-09" data-section="modul-09"><span class="dot" aria-hidden="true"></span>Zi 10 — Recapitulare</a>
+</div>
+<div class="navgroup" data-group="Supliment aprofundat">
+<div class="navgroup-label" id="grp-supliment-aprofundat">Supliment aprofundat</div>
+<a class="navitem" href="#sup-1" data-section="sup-1"><span class="dot" aria-hidden="true"></span>1. Integrarea RO e-Factura</a>
+<a class="navitem" href="#sup-2" data-section="sup-2"><span class="dot" aria-hidden="true"></span>2. Arhivarea e-mailurilor</a>
+<a class="navitem" href="#sup-3" data-section="sup-3"><span class="dot" aria-hidden="true"></span>3. Troubleshooting OCR</a>
+<a class="navitem" href="#sup-4" data-section="sup-4"><span class="dot" aria-hidden="true"></span>4. Planul backup 3-2-1</a>
+<a class="navitem" href="#sup-5" data-section="sup-5"><span class="dot" aria-hidden="true"></span>5. Partajare criptată</a>
+</div>
+<div class="navgroup" data-group="Resurse & evaluare">
+<div class="navgroup-label" id="grp-resurse-si-evaluare">Resurse & evaluare</div>
+<a class="navitem" href="#resurse" data-section="resurse"><span class="dot" aria-hidden="true"></span>Resurse de descărcat</a>
+<a class="navitem" href="#concursuri" data-section="concursuri"><span class="dot" aria-hidden="true"></span>Concursuri propuse</a>
+<a class="navitem" href="#evaluare" data-section="evaluare"><span class="dot" aria-hidden="true"></span>Evaluare &amp; examinare</a>
+</div>
+
+      <p class="empty-state" id="emptyState" hidden>Niciun rezultat pentru căutarea ta.</p>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button class="theme-toggle" id="themeToggle" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="themeIcon" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
+        <span id="themeLabel">Regim de zi</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="content" id="mainContent" tabindex="-1">
+<section class="section active" id="acasa">
+<div class="eyebrow">Curs de competențe digitale · 10 zile + evaluare practică</div>
+<h1 class="title">HUB DIGITAL <em>— Digitalizare, OCR și Arhivare</em></h1>
+<p class="lede">Competențe practice de digitalizare, OCR și gestionare a datelor, gândite pentru persoane fizice autorizate, întreprinderi individuale și familiale, micro-întreprinderi, SRL-uri și ONG-uri din sectorul asociativ.</p>
+
+<div class="flowline">
+  <div class="fl-node">Hârtie</div><div class="fl-arrow">&#8594;</div>
+  <div class="fl-node">Scanare</div><div class="fl-arrow">&#8594;</div>
+  <div class="fl-node">Curățare &amp; OCR</div><div class="fl-arrow">&#8594;</div>
+  <div class="fl-node">Arhivă indexată</div><div class="fl-arrow">&#8594;</div>
+  <div class="fl-node">Semnătură electronică</div>
+</div>
+
+<div class="hero-meta">
+  <div>Autor &amp; instructor<strong>Alexandru Dumbrava</strong></div>
+  <div>Durată<strong>10 zile curs + 3 zile evaluare practică</strong></div>
+  <div>Format<strong>Teorie, practică, atelier, concursuri</strong></div>
+  <div>Public<strong>PFA · II · IF · micro-întreprinderi · ONG-uri</strong></div>
+</div>
+<h2 style="margin-top:6px;">Traseul celor 10 zile</h2><div class="day-grid"><a class="day-card" href="#modul-00" data-section="modul-00"><div class="dn">Zi 1</div><div class="dt">Securitatea datelor</div><div class="dk">Teorie</div></a>
+<a class="day-card" href="#modul-01" data-section="modul-01"><div class="dn">Zi 2</div><div class="dt">Pregătirea digitalizării</div><div class="dk">Teorie</div></a>
+<a class="day-card" href="#modul-02" data-section="modul-02"><div class="dn">Zi 3</div><div class="dt">Fluxul 1 — complet</div><div class="dk">Practică</div></a>
+<a class="day-card" href="#modul-03" data-section="modul-03"><div class="dn">Zi 4</div><div class="dt">Fluxul 2 — scurt</div><div class="dk">Practică</div></a>
+<a class="day-card" href="#modul-04" data-section="modul-04"><div class="dn">Zi 5</div><div class="dt">Fluxul 3 — volume mari</div><div class="dk">Practică</div></a>
+<a class="day-card" href="#modul-05" data-section="modul-05"><div class="dn">Zi 6</div><div class="dt">Tehnici de organizare</div><div class="dk">Teorie</div></a>
+<a class="day-card" href="#modul-06" data-section="modul-06"><div class="dn">Zi 7</div><div class="dt">DocFetcher & arhivare ISO</div><div class="dk">Practică</div></a>
+<a class="day-card" href="#modul-07" data-section="modul-07"><div class="dn">Zi 8</div><div class="dt">Atelier detaliu practică</div><div class="dk">Atelier</div></a>
+<a class="day-card" href="#modul-08" data-section="modul-08"><div class="dn">Zi 9</div><div class="dt">Formulare & semnătură electronică</div><div class="dk">Atelier</div></a>
+<a class="day-card" href="#modul-09" data-section="modul-09"><div class="dn">Zi 10</div><div class="dt">Recapitulare & aprofundare</div><div class="dk">Sinteză</div></a>
+</div><div class="plate"><h2>Cerințe obligatorii de participare</h2><ul class="req-list" style="margin-top:10px;"><li><span class="lt">A</span>Laptop cu Windows 10 sau Windows 11.</li><li><span class="lt">B</span>Browser Google Chrome, pentru configurările predate la curs.</li><li><span class="lt">C</span>Cunoștințe medii de calculator: navigare, instalare programe, suite Office.</li></ul></div>
+<div class="plate"><h2>Despre softuri</h2><p style="color:var(--text-2);font-size:14px;">Toate softurile folosite în workshop sunt cu sursă deschisă (open-source) — se descarcă gratuit de pe internet, fără obligații financiare. Sursele de descărcare sunt centralizate în secțiunea <strong>Resurse</strong> din meniu.</p></div>
+
+</section>
+
+<section class="section" id="modul-00">
+<div class="eyebrow">Zi 1 · Modul 0 · Teorie</div>
+<h1 class="title">Securitatea datelor</h1>
+<p class="lede">Viruși, troieni și ransomware sunt tipuri periculoase de malware. Acționează diferit, dar au un scop comun: compromiterea datelor și controlul asupra sistemelor tale informatice.</p>
+<div class="timeline">
+<div class="tl-item"><div class="yr">Malware #1</div><h2>Ce este un virus?</h2><p>Un program dăunător conceput pentru a se atașa de fișiere sau programe legitime. Se execută odată cu pornirea fișierului-gazdă și se poate autoreplica în sistem — modifică sau corupe fișiere de sistem, încetinește performanța și se răspândește prin atașamente de e-mail sau stick-uri USB infectate.</p></div>
+
+<div class="tl-item"><div class="yr">Malware #2</div><h2>Ce este un cal troian (Trojan Horse)?</h2><p>Un program periculos ascuns în interiorul unui fișier aparent legitim (numele vine de la legenda antică). Utilizatorul descarcă un program util sau un joc gratuit; în spate, acesta conține un cod secret dăunător. Spre deosebire de un virus, nu se multiplică singur — deschide o „ușă din spate” (backdoor) prin care hackerii pot fura parole, spiona prin cameră sau folosi computerul pentru alte atacuri.</p></div>
+
+<div class="tl-item"><div class="yr">Malware #3</div><h2>Ce este un atac de tip ransomware?</h2><p>Un software de șantaj, una dintre cele mai mari amenințări actuale. Odată intrat în sistem (des printr-un troian sau atașament e-mail), blochează computerul sau criptează fișierele, apoi afișează un mesaj prin care se cere o răscumpărare în criptomonede. Experții în securitate recomandă să nu plătești niciodată — nu există nicio garanție că infractorii îți vor returna datele.</p></div>
+</div>
+<div class="plate"><h2>Prevenția — cea mai bună armă</h2><ul style="color:var(--text-2);font-size:14px;line-height:1.8;margin:0;padding-left:20px;"><li><strong>Antivirus bun:</strong> soluții recunoscute (ex. Bitdefender, Microsoft Security) care detectează și blochează amenințările în timp real.</li><li><strong>Backup periodic:</strong> fișierele importante, mereu pe hard disk extern sau în cloud — dacă ești victima unui ransomware, restaurezi datele fără să plătești.</li><li><strong>Atenție la e-mailuri:</strong> nu deschide atașamente și nu da click pe linkuri de la adrese necunoscute; descarcă software legal, evită crack-uri și keygen-uri.</li></ul></div>
+<div class="plate"><h2>Bune practici de securitate la transport</h2><ul style="color:var(--text-2);font-size:14px;line-height:1.8;margin:0;padding-left:20px;"><li><strong>Regula copiei de rezervă:</strong> un mediu portabil nu trebuie să conțină niciodată singura copie a unor date importante.</li><li><strong>Dezactivarea AutoRun / AutoPlay:</strong> previne executarea automată a scripturilor periculoase la introducerea stick-ului în sisteme necunoscute.</li><li><strong>Scanare antivirus la conectare:</strong> verificarea automată a stick-ului, cu un antivirus actualizat, înainte de a deschide fișierele de pe el.</li></ul></div>
+<div class="grid-2"><div class="plate"><h2><span class="num">01</span>Flash Drive Protector („zero space left”)</h2><p style="color:var(--text-2);font-size:13.5px;">Utilitar gratuit și portabil (fără instalare), gândit pentru era virușilor de tip Autorun. „Umple” spațiul liber de pe stick cu fișiere-fantomă, împiedicând scripturile malițioase să mai creeze fișiere noi pe dispozitiv.<br><a href="https://sourceforge.net/projects/flashprotector/" target="_blank" rel="noopener">sourceforge.net/projects/flashprotector</a></p></div>
+<div class="plate"><h2><span class="num">02</span>Protecție hardware „read-only”</h2><p style="color:var(--text-2);font-size:13.5px;">Comutatorul fizic de pe cardurile SD e o metodă simplă și eficientă: când e tras în poziția Lock, cititorul raportează sistemului că mediul e restricționat la citire — imunitate totală la malware, indiferent cât de infectat e calculatorul în care introduci cardul. Atenție: cardurile MicroSD folosesc adaptoare, iar cele ieftine pot avea clapeta fragilă.</p></div>
+</div><blockquote class="callout"><strong>Concluzie:</strong> Firmele mici lovite de ransomware ajung frecvent să nu-și mai recupereze complet datele — chiar și atunci când plătesc răscumpărarea, recuperarea integrală rămâne incertă. Instruirea periodică a angajaților în igienă cibernetică rămâne, în schimb, una dintre cele mai eficiente și mai ieftine măsuri de reducere a riscului de infectare prin eroare umană.</blockquote>
+<div class="src-note"><strong>Surse / de citit în plus:</strong> ghidurile publice de securitate ale Bitdefender, Microsoft Security și DNSC (Directoratul Național de Securitate Cibernetică).</div>
+
+</section>
+
+<section class="section" id="modul-01">
+<div class="eyebrow">Zi 2 · Modul 1 · Teorie — Modul pregătitor</div>
+<h1 class="title">Pregătirea digitalizării</h1>
+<p class="lede">Workshop pentru competențe digitale, focusat către persoane fizice autorizate, întreprinderi individuale, întreprinderi familiale, micro-întreprinderi și SRL-uri, dar și ONG-uri.</p>
+<div class="bio-card"><div class="bio-avatar">AD</div><div><h2>Despre instructor</h2><div class="bio-role">Alexandru Dumbrava — instructor &amp; ghid la acest workshop</div><p>Pasiunea pentru digitalizarea documentelor și a arhivelor a început în 2024, la cursul de Biblioteconomie, unde am definitivat o lucrare pe această temă.</p><p>Softurile folosite în cadrul acestui workshop sunt cu sursă deschisă — asta însemnând că se pot descărca de pe internet fără obligații financiare. La finalul modulelor voi indica sursa lor pentru descărcare.</p></div></div><div class="plate"><h2>Digitizare vs. digitalizare — care e diferența?</h2><p style="color:var(--text-2);font-size:14px;"><strong>Digitizarea</strong> e procesul tehnic de conversie a unui document fizic într-un fișier digital (scanare, fotografiere). <strong>Digitalizarea</strong> e mai amplă: înseamnă schimbarea modului în care lucrezi, folosind instrumente digitale pentru fluxuri întregi de activitate — digitizarea e doar primul pas al digitalizării.</p></div>
+<h2 style="margin-top:26px;">Pregătirea fizică a documentelor</h2><blockquote class="callout"><strong>Reține:</strong> Calitatea scanării digitale depinde 80% de modul în care e pregătită hârtia fizică.</blockquote>
+<div class="plate"><h2><span class="num">01</span>Pasul 1 — Pregătirea fizică</h2><ul style="color:var(--text-2);font-size:13.5px;line-height:1.8;margin:0;padding-left:20px;"><li><strong>Decapsarea corectă:</strong> decapsator tip clește, niciodată unghiile sau rigla — eviți ruperea colțului foii.</li><li><strong>Capse ruginite / agrafe vechi:</strong> se scot prin presare din spate; dacă hârtia s-a lipit de metal, foloseşte o pensetă plată.</li><li><strong>Netezirea paginilor:</strong> îndreaptă manual pliurile și colțurile îndoite înainte de scanare.</li></ul></div>
+<div class="plate"><h2><span class="num">02</span>Pasul 2 — Captura digitală &amp; setările optime</h2><p style="color:var(--text-2);font-size:13.5px;">Nu scana la rezoluție maximă „de dragul calității” — obții fișiere uriașe, greu de trimis pe e-mail.</p><blockquote class="callout"><strong>Reține:</strong> Pentru procesare OCR (text căutabil), 300 DPI e valoarea optimă. Sub 200 DPI, softul greșește literele; peste 400 DPI doar încetinește procesarea, fără câștig de precizie.</blockquote>
+</div>
+<div class="plate"><h2><span class="num">03</span>Pasul 3 — Procesarea OCR</h2><ul style="color:var(--text-2);font-size:13.5px;line-height:1.8;margin:0;padding-left:20px;"><li><strong>Auto-Flattening (îndreptare):</strong> elimină curbura paginilor la cărți sau registre groase deschise.</li><li><strong>Auto-Cropping (decupare):</strong> softul elimină marginea neagră din exteriorul foii.</li><li><strong>Limba OCR:</strong> setează întotdeauna Română + Engleză — altfel softul confundă diacriticele (ă, ș, ț, î, â) cu caractere speciale sau cifre.</li><li><strong>Verificare test:</strong> deschide PDF-ul rezultat, Ctrl+F, caută un cuvânt din mijlocul paginii — dacă îl găsește și îl marchează, OCR-ul a reușit.</li></ul></div>
+<h2 style="margin-top:26px;">Scanerul folosit — Czur Shine Ultra, 13 MP</h2><div class="plate"><h2>Accesorii incluse</h2><p style="color:var(--text-2);font-size:14px;">Produsul vine cu soft dedicat pentru scanare și pregătirea documentelor. Accesorii: cablu USB, pedală declanșatoare, pad pentru document, îndreptare de carte.</p></div>
+<h2 style="margin-top:26px;">Procedura de digitizare în format PDF</h2><p style="color:var(--text-2);font-size:14px;">O succesiune de pași care includ fotografierea și prelucrarea materialelor printr-o serie de softuri modulare, cu scopul de a livra un rezultat profesional folosind resurse open-source — excepție face PDF24, care nu e open-source, dar poate fi folosit gratuit.</p><div class="flowchart"><div class="fstep"><span class="fn">01</span>Pregătirea mesei de lucru</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">02</span>Fotocopierea materialului (scanare)</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">03</span>Curățarea și prelucrarea în ScanTailor</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">04</span>Introducerea în NAPS / ImgtoPDF, ultima revizie</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">05</span>Exportul într-un singur fișier PDF</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">06</span>Editare estetică &amp; de calitate în PDF24</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">07</span>OCR-izare cu PDF24</div></div>
+<p style="color:var(--text-2);font-size:14px;margin-top:14px;">OCR e procesul prin care o imagine cu caractere text e convertită în text efectiv, ceea ce permite altor aplicații — precum DocFetcher — să îl indexeze și să îl facă ușor de căutat.</p><h2 style="margin-top:26px;">Cele 3 fluxuri de lucru — previzualizare</h2><p style="color:var(--text-2);font-size:14px;">Fiecare flux variază în funcție de tipul și necesitatea folosirii documentului. E important să stabilim de la bun început fluxul potrivit și să-l rafinăm pentru rezultate optime — documente la rezoluții bune, care ocupă cât mai puțin spațiu pe disc. Le detaliem pe rând, zilele următoare.</p><div class="grid-2"><div class="plate"><h2>Flux 1 — optim</h2><p style="color:var(--text-2);font-size:13.5px;">Rezultate excelente, fișiere mici, aliniere perfectă. Ideal pentru cărți destinate bibliotecilor online. <em>Detalii → Zi 3.</em></p></div>
+<div class="plate"><h2>Flux 2 — scurt (draft)</h2><p style="color:var(--text-2);font-size:13.5px;">Recomandat pentru rezultate foarte rapide, unde perfecțiunea geometrică nu e obligatorie. <em>Detalii → Zi 4.</em></p></div>
+</div><div class="plate"><h2>Flux 3 — volume mari</h2><p style="color:var(--text-2);font-size:13.5px;">Precizie crescută la OCR-izare, pentru volume industriale de documente. <em>Detalii → Zi 5.</em></p></div>
+
+</section>
+
+<section class="section" id="modul-02">
+<div class="eyebrow">Zi 3 · Modul 2 · Practică</div>
+<h1 class="title">Demonstrația practică — Fluxul 1 (optim)</h1>
+<p class="lede">Ziua e dedicată integral demonstrației practice a Fluxului 1, la calculator.</p>
+<div class="flowchart"><div class="fstep"><span class="fn">01</span>Pregătirea mesei &amp; configurarea softului</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">02</span>Fotocopierea materialului (jpg)</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">03</span>Curățarea în ScanTailor</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">04</span>Introducerea în NAPS / ImgtoPDF</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">05</span>Aducerea la calitate prin PDF24</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">06</span>Export PDF</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">07</span>OCR-izare cu PDF24</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">08</span>Organizare &amp; arhivare ISO</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">09</span>Multi-indexare cu DocFetcher</div></div>
+<p class="flow-note">Proba practică e ilustrată video în timpul atelierului.</p><div class="plate"><h2>Concluzii</h2><ul style="color:var(--text-2);font-size:14px;line-height:1.8;margin:0;padding-left:20px;"><li><strong>Etape:</strong> Fotografiere JPG → ScanTailor (curățare avansată) → NAPS/ImgtoPDF → PDF24 (OCR).</li></ul><p style="color:var(--text-2);font-size:14px;margin-top:10px;"><strong>Scop:</strong> Rezultate excelente, fișiere mici, aliniere perfectă — ideal pentru cărți destinate bibliotecilor online.</p></div>
+
+</section>
+
+<section class="section" id="modul-03">
+<div class="eyebrow">Zi 4 · Modul 3 · Practică</div>
+<h1 class="title">Demonstrația practică — Fluxul 2 (scurt / draft)</h1>
+<p class="lede">Ziua e dedicată integral demonstrației practice a Fluxului 2, la calculator.</p>
+<div class="flowchart"><div class="fstep"><span class="fn">01</span>Pregătirea mesei &amp; configurarea softului</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">02</span>Fotocopierea materialului (jpg)</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">03</span>Editarea imaginilor în softul Czur</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">04</span>OCR direct în softul Czur</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">05</span>Salvare ca PDF indexabil</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">06</span>Organizare &amp; arhivare ISO</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">07</span>Multi-indexare cu DocFetcher</div></div>
+<p class="flow-note">Proba practică e ilustrată video în timpul atelierului.</p><div class="plate"><h2>Concluzii</h2><ul style="color:var(--text-2);font-size:14px;line-height:1.8;margin:0;padding-left:20px;"><li><strong>Etape:</strong> Fotografiere JPG → prelucrare directă în Czur Shine → PDF indexabil.</li><li>Organizarea imaginilor e restrictivă în acest flux — reordonarea se face doar prin redenumire.</li></ul><p style="color:var(--text-2);font-size:14px;margin-top:10px;"><strong>Scop:</strong> Recomandat pentru rezultate foarte rapide, unde perfecțiunea geometrică (margini complet drepte) nu e obligatorie.</p></div>
+
+</section>
+
+<section class="section" id="modul-04">
+<div class="eyebrow">Zi 5 · Modul 4 · Practică</div>
+<h1 class="title">Demonstrația practică — Fluxul 3 (volume mari)</h1>
+<p class="lede">Ziua e dedicată integral demonstrației practice a Fluxului 3, la calculator.</p>
+<div class="flowchart"><div class="fstep"><span class="fn">01</span>Pregătirea mesei &amp; configurarea softului</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">02</span>Fotocopierea materialului (jpg)</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">03</span>Curățarea în ScanTailor</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">04</span>Introducerea în NAPS</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">05</span>Export jpg</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">06</span>Aducerea la calitate prin Aplicația Czur</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">07</span>OCR-izare cu softul Czur</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">08</span>Organizare &amp; arhivare ISO</div><div class="farrow">&#8594;</div><div class="fstep"><span class="fn">09</span>Multi-indexare cu DocFetcher</div></div>
+<p class="flow-note">Proba practică e ilustrată video în timpul atelierului.</p><div class="plate"><h2>Concluzii</h2><ul style="color:var(--text-2);font-size:14px;line-height:1.8;margin:0;padding-left:20px;"><li><strong>Etape:</strong> Foto → ScanTailor → NAPS (export imagini fine) → Aplicația Czur (OCR rapid) → DocFetcher.</li></ul><p style="color:var(--text-2);font-size:14px;margin-top:10px;"><strong>Scop:</strong> Precizie crescută la OCR-izare, pentru volume industriale de documente.</p></div>
+
+</section>
+
+<section class="section" id="modul-05">
+<div class="eyebrow">Zi 6 · Modul 5 · Teorie</div>
+<h1 class="title">Tehnici de organizare</h1>
+<p class="lede">Denumirea documentelor, arhivarea ISO, transportul documentelor, scanarea antivirus și soluțiile profesionale de arhivistică.</p>
+<div class="plate"><h2>Denumirea documentelor</h2><p style="color:var(--text-2);font-size:14px;">Un document scanat bine e inutil dacă nu poate fi găsit în calculator. Elimină denumirile generice de tip <code style="background:var(--bg-2);padding:2px 6px;border-radius:4px;">Scan0001.pdf</code>.</p><p style="color:var(--text-2);font-size:14px;"><strong>Regula de nomenclatură:</strong></p><code style="display:block;background:var(--bg-2);border:1px solid var(--border-soft);border-radius:6px;padding:10px 12px;font-family:var(--font-mono);font-size:12.5px;color:var(--verdigris);margin:8px 0;">[AAAA-LL-ZZ]_[Tip_Document]_[Nume_Client]_[Detalii].pdf</code><p style="color:var(--text-2);font-size:13.5px;">Exemple: <em>2026-08-01_Factura_Furnizor_Vodafone_nr982.pdf</em> · <em>2026-08-01_MemoriuTehnic_Proiect_ImobilS6_v1.pdf</em> · <em>2026-08-01_FisaMedicala_Popescu_Ion.pdf</em></p></div>
+<div class="plate"><h2>Arhivare ISO</h2><p style="color:var(--text-2);font-size:14px;">Structurarea arhivei și „înghețarea” ei într-un fișier imagine optică (ISO), cu aplicații precum Folder2Iso. Formatul păstrează ierarhia intactă și e o soluție solidă pentru predarea calupurilor mari de date către arhivele naționale sau bibliotecile virtuale.</p></div>
+<div class="plate"><h2>Transport documente — recomandări</h2><p style="color:var(--text-2);font-size:14px;">La transportul documentelor e important să iei în calcul soluții de criptare a datelor — pierderea sau furtul mediului de stocare poate cauza probleme majore. Opțiuni accesibile: SSD extern criptat cu PIN, rack HDD criptat cu amprentă, sau un HDD/SSD cu cifru (cea mai accesibilă soluție, se poate asocia cu un SSD 2.5" de laptop clasic).</p></div>
+<div class="plate"><h2>Scanarea documentelor cu VirusTotal</h2><p style="color:var(--text-2);font-size:14px;">VirusTotal e un serviciu online gratuit, deținut de Google (Chronicle), care analizează fișiere sau linkuri suspecte folosind peste 70 de motoare antivirus diferite — ca și cum ai duce un colet suspect la o comisie de 70 de experți și ai primi un verdict colectiv.</p><blockquote class="callout warn"><strong>Avertisment critic:</strong> VirusTotal e un serviciu public — tot ce încarci devine „vizibil” pentru comunitatea de securitate. Nu încărca niciodată fișiere cu date personale (GDPR), documente confidențiale, contracte sau date financiare. Încarcă doar fișiere „oarbe”: kituri de instalare, executabile, șabloane fără date reale.</blockquote>
+<p style="color:var(--text-2);font-size:13.5px;margin-top:10px;"><strong>Scenarii de folosire:</strong> verificarea kiturilor de instalare descărcate de pe forumuri, verificarea atașamentelor din e-mailuri de la surse necunoscute, analiza linkurilor suspecte primite prin mesaje.</p></div>
+<div class="grid-2"><div class="plate"><h2><span class="num">01</span>ZIP — pentru uz zilnic</h2><p style="color:var(--text-2);font-size:13.5px;"><strong>Avantaj:</strong> economisești spațiu prin compresie și poți proteja documentele prin parolă. <strong>Dezavantaj:</strong> dacă un singur bit se corupe, întreaga arhivă poate deveni ilizibilă.</p></div>
+<div class="plate"><h2><span class="num">02</span>ISO — pentru „master archival”</h2><p style="color:var(--text-2);font-size:13.5px;"><strong>Avantaj:</strong> odată creat, e „read-only” — nu poți modifica accidental un document din el. <strong>Dezavantaj:</strong> ineficient pentru documente simple, ocupă mai mult spațiu.</p></div>
+</div><h2 style="margin-top:26px;">Soluții de arhivistică profesională</h2><p style="color:var(--text-2);font-size:14px;">Când volumul de documente scanate crește de la câteva sute la mii sau milioane și cerințele legale devin stricte, stocarea pe foldere sau în ZIP/ISO devine insuficientă — intervin sistemele profesionale de gestiune și arhivare electronică (EDMS/DMS).</p><div class="provider-grid">
+<div class="provider-card"><h2>TRANSFOND — e-Arhiv@</h2><span class="tag">Financiar-bancar</span><p>Operează serviciul e-Arhiv@, prima soluție de arhivare electronică autorizată pe piața românească sub Legea 135/2007. Se adresează în special băncilor, asigurătorilor și firmelor de leasing, scutindu-le de costul acreditării unui centru de date propriu.</p></div>
+<div class="provider-card"><h2>certSIGN — certARCHIVE</h2><span class="tag">Servicii de încredere</span><p>Cunoscut mai ales pentru certificatele de semnătură electronică calificată, oferă prin certARCHIVE arhivare hibridă (fizică și electronică), ca prestator calificat de servicii de încredere conform eIDAS — util acolo unde arhiva trebuie legată direct de documente deja semnate digital.</p></div>
+<div class="provider-card"><h2>ARHIVAM.RO — soluții OpenText</h2><span class="tag">Enterprise / volume mari</span><p>A adus în România platforma OpenText, unul dintre liderii globali în Enterprise Content Management, și face parte din rețeaua internațională Arhive Global Network — de luat în calcul pentru scanare la viteză industrială, pe volume foarte mari.</p></div>
+<div class="provider-card"><h2>ELO Digital Office Romania</h2><span class="tag">ECM internațional</span><p>Suită ECM internațională, prezentă în România printr-o rețea de parteneri locali. Pune accent pe stocare centralizată, căutare avansată în conținut și criptare AES-256, cu jurnal de audit gata pregătit pentru un eventual control fiscal.</p></div>
+<div class="provider-card"><h2>AGS Records Management</h2><span class="tag">Fizic + digital</span><p>Combină o aplicație web proprie de gestiune a înregistrărilor cu servicii de depozitare fizică — util dacă vrei să consulți, din același loc, atât arhiva scanată, cât și registrele fizice originale.</p></div>
+<div class="provider-card"><h2>Arhive-Dox</h2><span class="tag">Tranziție fizic → digital</span><p>Specializat pe tranziția de la arhiva de hârtie la cea digitală, cu un DMS ce permite permisiuni separate pe departament (HR, contabilitate etc.) și backup în cloud securizat.</p></div>
+<div class="provider-card"><h2>Indeco Soft — Docs4Ever</h2><span class="tag">Cloud sau on-premise</span><p>Oferă atât variantă cloud (găzduită pe centre de date certificate ISO 27001), cât și variantă on-premise, instalată direct pe serverele instituției — utilă acolo unde datele nu pot părăsi rețeaua internă.</p></div>
+</div>
+<div class="plate"><h2>Ce criterii contează la alegerea unui furnizor?</h2><ul style="color:var(--text-2);font-size:14px;line-height:1.8;margin:0;padding-left:20px;"><li><strong>Conformitatea legală:</strong> ai nevoie de un furnizor acreditat, care garantează integritatea prin semnătură electronică calificată și marcare temporală.</li><li><strong>Modul de implementare:</strong> cloud (găzduit, mai ieftin și rapid) vs. on-premise (control total al datelor sensibile).</li><li><strong>Capacitatea de integrare:</strong> cât de ușor se leagă softul de arhivă cu aplicațiile deja existente (ERP, facturare).</li></ul></div>
+<div class="src-note"><strong>Surse / de citit în plus:</strong> paginile oficiale ale fiecărui furnizor — verifică din nou datele înainte de a te baza pe ele, piața se schimbă rapid.</div>
+
+</section>
+
+<section class="section" id="modul-06">
+<div class="eyebrow">Zi 7 · Modul 6 · Practică</div>
+<h1 class="title">Ordonarea datelor și DocFetcher</h1>
+<p class="lede">DocFetcher e o aplicație open-source gratuită de căutare pe desktop, care caută nu doar în numele fișierelor, ci în interiorul conținutului lor — ca un motor de căutare „Google” personal, complet offline.</p>
+<div class="plate"><h2>Caracteristici principale</h2><ul style="color:var(--text-2);font-size:14px;line-height:1.8;margin:0;padding-left:20px;"><li><strong>Căutare full-text avansată:</strong> PDF-uri, Word/Excel, OpenOffice, .txt, cod sursă, e-mailuri Outlook (.pst), chiar și arhive ZIP/7z/RAR.</li><li><strong>Funcționează pe bază de indexare:</strong> creează o singură dată un index (motor Apache Lucene) al folderelor selectate — căutările ulterioare returnează rezultate în milisecunde.</li><li><strong>Confidențialitate totală:</strong> offline-first, nu trimite nicio dată pe internet.</li><li><strong>Versiune portabilă:</strong> poate rula direct de pe un stick USB, împreună cu documentele.</li></ul></div>
+<div class="grid-2"><div class="plate"><h2>De ce e util într-un proiect de digitalizare</h2><p style="color:var(--text-2);font-size:13.5px;">Găsește instantaneu un nume, o dată sau un cuvânt-cheie pierdut într-o arhivă de mii de PDF-uri deja procesate prin OCR — o alternativă locală, gratuită, la sistemele DMS complexe, pentru cine nu are nevoie de funcții enterprise.</p></div>
+<div class="plate"><h2>Limitări de reținut</h2><p style="color:var(--text-2);font-size:13.5px;">Nu e un editor sau un DMS — strict un instrument de căutare și previzualizare. Necesită OCR în prealabil: pe un PDF format doar din imagini scanate, fără strat de text, DocFetcher nu poate „citi” conținutul.</p></div>
+</div><h2 style="margin-top:26px;">Operatori de căutare avansată</h2><div class="op-grid"><div class="op-card"><h3>Operatori Booleeni</h3><code>factură AND plată<br>contract NOT reziliere</code><p>AND / OR / NOT (sau &amp;&amp; / || / -), scrise cu majuscule. Fără operator, comportamentul implicit e OR.</p></div>
+<div class="op-card"><h3>Căutare de expresii exacte</h3><code>"hotărârea consiliului"</code><p>Text între ghilimele duble → caută exact acea secvență de cuvinte, în ordinea respectivă.</p></div>
+<div class="op-card"><h3>Wildcards</h3><code>cont?&nbsp;&nbsp;&nbsp;digitiz*</code><p>? înlocuiește exact o literă (cont? → contul, dar nu contabilitate). * înlocuiește zero sau mai multe caractere.</p></div>
+<div class="op-card"><h3>Căutare fuzzy</h3><code>buget~</code><p>Tolerantă la greșeli de tastare sau erori vechi de OCR — găsește variante apropiate (ex. bugete).</p></div>
+<div class="op-card"><h3>Căutare de proximitate</h3><code>"legea finanțare"~5</code><p>Cuvintele apar la o distanță de cel mult N cuvinte unul de celălalt.</p></div>
+<div class="op-card"><h3>Căutare pe câmpuri</h3><code>filename:factura<br>title:raport</code><p>Restrânge căutarea la numele fișierului sau la titlul documentului, din metadate.</p></div>
+</div><h2 style="margin-top:26px;">Regex, într-un caz concret — cod fiscal / serie de factură</h2><p style="color:var(--text-2);font-size:14px;">În România, codurile fiscale sau seriile de acte urmează de obicei un șablon (litere mari urmate de cifre). Ai mii de dosare digitalizate și trebuie să identifici rapid un anumit tip de cod fiscal (CUI/CIF) sau o serie de factură — fără să știi numărul exact, dar cunoscând structura lui.</p><div class="grid-2"><div class="plate"><h2>Exemplul 1 — cod fiscal / CUI</h2><p style="color:var(--text-2);font-size:13.5px;">2 litere mari, opțional un spațiu, apoi 4-8 cifre (ex: RO 12345678 sau AB1234):</p><code style="display:block;background:var(--bg-2);border:1px solid var(--border-soft);border-radius:6px;padding:8px 10px;font-family:var(--font-mono);font-size:12.5px;color:var(--verdigris);">/([A-Z]{2})\s*(\d{4,8})/</code></div>
+<div class="plate"><h2>Exemplul 2 — serie de factură</h2><p style="color:var(--text-2);font-size:13.5px;">Text fix „FACT”, urmat de an și un număr oarecare:</p><code style="display:block;background:var(--bg-2);border:1px solid var(--border-soft);border-radius:6px;padding:8px 10px;font-family:var(--font-mono);font-size:12.5px;color:var(--verdigris);">/FACT-\d{4}-\d+/</code></div>
+</div><div class="plate"><h2>Anatomia expresiei /\b[A-Z]{2}\d{5}\b/</h2><p style="color:var(--text-2);font-size:13.5px;">Caută exact un cod de 7 caractere: 2 litere mari + 5 cifre, ca un cuvânt distinct.</p><ul style="color:var(--text-2);font-size:13px;line-height:1.8;margin:0;padding-left:20px;"><li><code>/ ... /</code> — delimitatorii care anunță o expresie regulată.</li><li><code>\b</code> — graniță de cuvânt: nu găsește codul „ascuns” în interiorul altui șir mai lung.</li><li><code>[A-Z]</code> — orice literă mare, de la A la Z.</li><li><code>{2}</code> — elementul anterior se repetă exact de 2 ori.</li><li><code>\d</code> — orice cifră de la 0 la 9.</li><li><code>{5}</code> — elementul anterior se repetă exact de 5 ori.</li></ul><p style="color:var(--text-2);font-size:13.5px;margin-top:8px;">Util pentru procese-verbale, certificate sau registre scanate unde numărul de înregistrare respectă mereu același format — extrage instantaneu fișierele care conțin codul respectiv, fără căutare manuală pagină cu pagină.</p></div>
+<div class="src-note"><strong>Surse / de citit în plus:</strong> structura acestei secțiuni (Boolean, expresii exacte, wildcards, fuzzy, proximitate, câmpuri) e adaptată după manualul oficial DocFetcher, secțiunea „Query Syntax” (<a href="https://docfetcher.sourceforge.io/" target="_blank" rel="noopener">docfetcher.sourceforge.io</a>). Exemplele de regex pentru CUI, cod fiscal și serii de facturi sunt gândite pentru acest curs.</div>
+
+</section>
+
+<section class="section" id="modul-07">
+<div class="eyebrow">Zi 8 · Modul 7 · Atelier</div>
+<h1 class="title">Atelier detaliu practică</h1>
+<p class="lede">Zi de atelier live, la calculator — instructorul detaliază, pas cu pas, funcționalitatea celor trei softuri centrale ale fluxului de digitalizare. Conținutul de mai jos e reperul scris; demonstrația propriu-zisă se desfășoară practic, în timpul cursului.</p>
+<div class="grid-2"><div class="plate"><h2>Czur Shine — funcționalitate detaliată</h2><p style="color:var(--text-2);font-size:13.5px;">Scanerul folosit la curs (13 MP), cu soft dedicat de scanare și pregătire. Accesorii: cablu USB, pedală declanșatoare, pad document, îndreptare de carte — detaliate în Modulul 1.</p></div>
+<div class="plate"><h2>PDF24 — funcționalitate detaliată</h2><p style="color:var(--text-2);font-size:13.5px;">Folosit pentru aducerea la calitatea dorită și pentru OCR-izare, în Fluxurile 1 și 2. Descărcare gratuită: tools.pdf24.org — detalii în secțiunea Resurse.</p></div>
+</div><div class="plate"><h2>ScanTailor — funcționalitate detaliată</h2><p style="color:var(--text-2);font-size:13.5px;">Folosit pentru curățarea și prelucrarea fotografiilor — inclusiv binarizare (conversie alb-negru) pentru fundal murdar sau contrast slab, detaliat în Suplimentul Aprofundat, secțiunea de troubleshooting OCR.</p></div>
+
+</section>
+
+<section class="section" id="modul-08">
+<div class="eyebrow">Zi 9 · Modul 8 · Atelier &amp; practică</div>
+<h1 class="title">Fișiere PDF completabile și semnătura electronică</h1>
+<p class="lede">Folosirea ONLYOFFICE pentru a crea PDF-uri cu forme completabile, cum și de ce să le folosim, și cum se leagă totul de semnătura electronică.</p>
+<h2>Tipuri de câmpuri interactive în ONLYOFFICE</h2><ul style="color:var(--text-2);font-size:14px;line-height:1.8;margin:0 0 18px;padding-left:20px;"><li><strong>Câmp text:</strong> date libere (nume, adresă); pe o linie sau pe mai multe.</li><li><strong>Listă derulantă:</strong> alegere dintr-o listă predefinită (județ, tip de document).</li><li><strong>Casetă de selectare:</strong> opțiuni Da/Nu sau acorduri.</li><li><strong>Buton radio:</strong> o singură variantă dintr-un set exclusiv.</li><li><strong>Câmp de imagine:</strong> încărcarea unei imagini direct în formular.</li><li><strong>Câmp de semnătură:</strong> semnare digitală sau olografă a documentului.</li></ul><div class="plate"><h2>Proprietăți avansate ale câmpurilor</h2><ul style="color:var(--text-2);font-size:13.5px;line-height:1.8;margin:0;padding-left:20px;"><li><strong>Câmp obligatoriu:</strong> împiedică trimiterea formularului dacă o căsuță a rămas goală.</li><li><strong>Indiciu (placeholder):</strong> text gri temporar plus mesaj de ajutor la hover.</li><li><strong>Limitarea caracterelor:</strong> un număr maxim de caractere sau format numeric impus.</li></ul></div>
+<div class="plate"><h2>Fluxul de creare: .oform vs. .pdf</h2><p style="color:var(--text-2);font-size:13.5px;">Poți porni de la un document Word existent sau de la zero. Formularul se lucrează inițial în format nativ <code>.oform</code> (ONLYOFFICE Form Template) — apoi îl exporți cu un click ca PDF interactiv completabil, deschidere posibilă și cu un simplu vizualizator gratuit, fără licențe speciale.</p></div>
+<blockquote class="callout"><strong>Reține:</strong> În loc să trimiți documente scanate statice — pe care oamenii le printează, le semnează olograf și le scanează înapoi — cu ONLYOFFICE transformi rapid orice document vechi într-un formular digital nativ, gata de completat pe calculator, tabletă sau telefon.</blockquote>
+<h2 style="margin-top:26px;">Nivelurile semnăturii electronice (eIDAS)</h2><p style="color:var(--text-2);font-size:14px;">Valabilitatea juridică a unui formular completat depinde de tipul de semnătură electronică folosită.</p><div class="tier-grid"><div class="tier"><div class="tk">NIVEL 1</div><h2>SES — Simplă</h2><p><strong>Ce este:</strong> o imagine a semnăturii olografe inserată în PDF, o bifă sau un cod PIN prin SMS.</p><p><strong>Utilizare:</strong> chestionare interne, cereri cu risc juridic scăzut.</p></div><div class="tier"><div class="tk">NIVEL 2</div><h2>AES — Avansată</h2><p><strong>Ce este:</strong> legată unic de semnatar, permite detectarea oricărei modificări ulterioare a datelor.</p><p><strong>Utilizare:</strong> documente cu risc juridic mediu.</p></div><div class="tier tier-gold"><div class="tk">NIVEL 3</div><h2>QES — Calificată</h2><p><strong>Ce este:</strong> echivalentul legal perfect al semnăturii olografe, valoare juridică incontestabilă în toată UE. Emisă de un furnizor acreditat (certSIGN, Transsped, Digisign etc.), printr-un dispozitiv sigur (token USB, cloud certificat).</p><p><strong>Utilizare:</strong> contracte comerciale majore, bilanțuri fiscale, achiziții publice, documente oficiale.</p></div></div><blockquote class="callout"><strong>Reguli de aur și protecții tehnice:</strong> Odată ce un formular PDF completat a fost semnat cu o semnătură calificată sau avansată, documentul se sigilează criptografic. Dacă cineva încearcă să modifice ulterior un singur caracter sau o dată dintr-un câmp, semnătura devine invalidă, iar programul de citire afișează un avertisment roșu — garanția supremă împotriva fraudelor. Câmpul de semnătură dedicat, din editor, cere automat selectarea certificatului digital de pe token sau din computer.</blockquote>
+<div class="grid-2"><div class="plate"><h2>De unde obții semnătura electronică</h2><p style="color:var(--text-2);font-size:13.5px;">De la furnizori de servicii de încredere acreditați în România (certSIGN, Transsped, Digisign), pe bază de identificare fizică sau video. Se livrează ca certificat digital pe token USB sau în cloud.</p></div>
+<div class="plate"><h2>Cum semnezi electronic un document</h2><p style="color:var(--text-2);font-size:13.5px;">Deschizi documentul într-o aplicație compatibilă (Adobe Acrobat, OnlyOffice, portal de semnătură), conectezi token-ul sau accesezi serviciul cloud, introduci PIN-ul, aplici semnătura în câmpul dedicat — fișierul se sigilează criptografic instantaneu.</p></div>
+</div><div class="plate"><h2>De ce semnăm și cum păstrăm documentele semnate</h2><p style="color:var(--text-2);font-size:13.5px;"><strong>Valoare legală</strong> deplină, echivalentă semnăturii olografe. <strong>Integritate absolută</strong> — orice modificare invalidează instant semnătura. <strong>Non-repudiere</strong> — semnatarul nu poate nega ulterior paternitatea documentului. Se păstrează în format <strong>PDF/A</strong>, cu validare pe termen lung (LTV) și backup redundant, cu acces strict controlat.</p></div>
+<h2 style="margin-top:26px;">Semnarea cu buletinul electronic (CIE)</h2><p style="color:var(--text-2);font-size:14px;">Folosirea cărții de identitate electronice pentru semnare digitală — inclusiv în Adobe Acrobat — e o metodă modernă în care statul devine „emitentul” certificatului tău digital.</p><div class="plate"><h2>Pregătire &amp; configurare</h2><p style="color:var(--text-2);font-size:13.5px;">Necesită un cititor cu NFC conectat la calculator (pentru a comunica cu cipul din buletin) și driverele corespunzătoare, de regulă furnizate de autoritatea emitentă.</p></div>
+<div class="plate"><h2>Semnarea în Adobe Acrobat</h2><p style="color:var(--text-2);font-size:13.5px;">Deschizi documentul → „Certificates” → „Digitally Sign” → selectezi zona pentru semnătură → alegi certificatul de pe buletin (detectat prin cititorul NFC) → introduci PIN-ul pentru a autoriza semnarea.</p></div>
+<blockquote class="callout"><strong>Reține:</strong> Cu buletinul electronic nu mai ai nevoie de o firmă terță pentru certificatul calificat — acesta e deja emis și stocat pe cip de Direcția pentru Evidența Persoanelor. Statul devine „furnizor de servicii de încredere”, iar buletinul e simultan actul tău de identitate și „token”-ul semnăturii electronice.</blockquote>
+<p style="color:var(--text-2);font-size:13.5px;">De reținut: cipul din buletin atestă identitatea ta <strong>personală</strong> (nume, CNP) — bun pentru contracte în nume propriu. Când semnezi în numele unei companii (bilanț ANAF, raportare ONRC, facturi electronice), ai nevoie de un certificat de <strong>persoană juridică</strong>, cu CUI-ul firmei și calitatea de Administrator sau Reprezentant Legal.</p><div class="src-note"><strong>Surse / de citit în plus:</strong> Regulamentul (UE) 910/2014 — eIDAS, art. 25-30; Legea 214/2024.</div>
+
+</section>
+
+<section class="section" id="modul-09">
+<div class="eyebrow">Zi 10 · Modul 9 · Sinteză</div>
+<h1 class="title">Recapitulare & aprofundare</h1>
+<p class="lede">Întrebări și răspunsuri, aprofundarea costurilor semnăturii electronice, arhivarea profesională și alegerea între cloud personal și cloud plătit.</p>
+<div class="plate"><h2>Costurile și implicațiile semnăturii calificate (QES)</h2><p style="color:var(--text-2);font-size:14px;">Când alegi sau recomanzi o soluție de semnătură calificată, costurile nu se rezumă la prețul abonamentului software — includ infrastructura și conformitatea birocratică.</p><ul style="color:var(--text-2);font-size:13.5px;line-height:1.8;margin:8px 0 0;padding-left:20px;"><li><strong>Costuri recurente:</strong> certificatele nu sunt „pe viață” — au o valabilitate de 1-3 ani, după care abonamentul se reînnoiește și identificarea se poate repeta.</li><li><strong>Revocare &amp; pierderea token-ului:</strong> dacă pierzi token-ul sau compromiți PIN-ul, certificatul trebuie revocat imediat, printr-o procedură de urgență la furnizor.</li></ul></div>
+<div class="grid-2"><div class="plate"><h2>Adobe Reader e suficient pentru...</h2><p style="color:var(--text-2);font-size:13.5px;">Angajatul care primește un document — citește, completează, semnează.</p></div>
+<div class="plate"><h2>Dar nu e suficient pentru...</h2><p style="color:var(--text-2);font-size:13.5px;">Cel care organizează arhiva, creează formulare sau gestionează fluxul companiei — are nevoie de OnlyOffice pentru formulare, unelte OCR pentru scanare și platforme dedicate pentru fluxuri enterprise.</p></div>
+</div><div class="plate"><h2>Arhivare profesională — costuri și implicații</h2><p style="color:var(--text-2);font-size:13.5px;">Motivul principal pentru care arhivezi corect nu ține de spațiu pe disc — ține de lege. În România, Nomenclatorul Arhivistic impune termene stricte de păstrare (de la 5 la peste 50 de ani); sistemul ales trebuie să gestioneze automat expirarea, pentru a șterge în siguranță la final și a evita riscul GDPR al păstrării inutile.</p><p style="color:var(--text-2);font-size:13.5px;"><strong>Riscul obsolescenței tehnologice:</strong> cea mai mare greșeală e stocarea pe suporturi care dispar (CD/DVD, formate proprietare ce nu se vor mai deschide peste 10 ani). Strategia corectă: formate deschise și standardizate — PDF/A pentru documente, TIFF pentru imagini brute, XML/JSON pentru date structurate.</p></div>
+<blockquote class="callout"><strong>Reține:</strong> Stocarea fizică e mai ieftină pe termen scurt, dar devine exponențial mai scumpă pe termen lung — spațiu, timp pierdut căutând documente, risc de distrugere. Arhivarea digitală are costuri inițiale mari, dar costuri operaționale infime ulterior. Modelul hibrid rămâne cea mai profesională abordare pentru o companie medie/mare: documentele active într-un DMS în cloud, digitalizare doar pentru cele care circulă frecvent (facturi, contracte, cereri).</blockquote>
+<div class="plate"><h2>Cloud personal vs. cloud plătit</h2><p style="color:var(--text-2);font-size:13.5px;">Pentru un curs de digitalizare și arhivare, e esențial de explicat că alegerea între un „Cloud personal” (self-hosted) și un „Cloud plătit” (SaaS) nu e doar o problemă de buget, ci una de responsabilitate și risc operațional.</p></div>
+<div class="plate"><h2>GDPR-ul, ca prieten al procesului</h2><p style="color:var(--text-2);font-size:13.5px;">GDPR-ul, în contextul digitalizării și arhivării, funcționează practic ca un caiet de sarcini gata făcut: dacă îl respecți, ai automat un proces de arhivare profesionist. Când digitalizezi mii de documente, transformi niște „hârtii” — protejate fizic de un dulap încuiat — în „date digitale”, care pot fi copiate, partajate sau furate în milisecunde.</p></div>
+<blockquote class="callout"><strong>„Digitalizarea nu înseamnă să scanezi tot și să arunci originalele la gunoi”:</strong> Digitalizarea responsabilă înseamnă: selectarea a ceea ce trebuie păstrat (minimizare), securizarea conținutului (criptare / acces controlat), trasabilitatea (audit log — cine a văzut documentul) și distrugerea, atât fizică a originalelor, cât și digitală a copiilor expirate.</blockquote>
+<h2 style="margin-top:26px;">Când se șterg documentele? Trei momente critice</h2><div class="timeline">
+<div class="tl-item"><div class="yr">Regula de aur</div><h2>Când expiră termenul legal de păstrare</h2><p>Fiecare document are o „viață” determinată prin lege (Nomenclatorul Arhivistic propriu al firmei): contabilitate (facturi, state de plată) de regulă 10 ani, resurse umane 50 de ani, corespondență obișnuită 3 ani. Distrugi imediat ce termenul a expirat și nu mai ai nicio obligație fiscală sau juridică.</p></div>
+
+<div class="tl-item"><div class="yr">Principiul GDPR</div><h2>Când scopul a încetat</h2><p>Dacă datele au fost colectate pentru un scop specific care s-a îndeplinit: CV-uri de candidați se șterg după finalizarea recrutării, datele de contact pentru promoții se șterg la finalul campaniei, datele temporare de lucru se șterg după livrarea și validarea proiectului.</p></div>
+
+<div class="tl-item"><div class="yr">Închiderea unui audit</div><h2>Când perioada de control a expirat</h2><p>Documentele care susțin o operațiune fiscală se păstrează până când perioada în care ANAF (sau altă autoritate) te poate controla a expirat. După aceea, fără litigii pe rol, pot fi arhivate „la rece” sau distruse dacă termenul legal a expirat.</p></div>
+</div>
+<blockquote class="callout warn"><strong>Excepția care blochează ștergerea:</strong> Chiar dacă un client îți cere să îi ștergi datele (dreptul de a fi uitat, GDPR), nu poți șterge documentele dacă o lege te obligă să le păstrezi — de exemplu, o factură pe care legea contabilității te obligă s-o păstrezi 10 ani pentru control fiscal. Răspunzi clientului că păstrezi datele doar pentru obligațiile legale și le vei șterge automat la expirarea termenului. Pe scurt: verifici Nomenclatorul Arhivistic → dacă termenul a trecut, distrugi (cu proces-verbal) → dacă termenul încă rulează, nu atingi documentul.</blockquote>
+<div class="src-note"><strong>Surse / de citit în plus:</strong> Legea Arhivelor Naționale nr. 16/1996 și Nomenclatorul Arhivistic propriu al instituției.</div>
+
+</section>
+
+<section class="section" id="sup-1">
+<div class="eyebrow">Supliment · Modul 1 · Detaliu aprofundat</div>
+<h1 class="title">Integrarea avansată cu RO e-Factura și SPV</h1>
+<p class="lede">Pentru mediul economic actual, scanarea documentelor fizice e doar o parte din digitalizare — la fel de importantă e gestionarea corectă a fluxurilor fiscale care se nasc direct în format digital, prin Spațiul Privat Virtual (SPV).</p>
+<div class="plate"><h2><span class="num">01</span>Anatomia pachetului e-Factura (XML vs. PDF vizual)</h2><p style="color:var(--text-2);font-size:14.5px;">O factură descărcată din RO e-Factura conține de fapt două componente, cu regimuri juridice diferite:</p><ul style="color:var(--text-2);font-size:14px;line-height:1.7;"><li><strong>Fișierul XML:</strong> documentul contabil oficial — structura de date fiscală, codurile, valorile și semnătura electronică a Ministerului Finanțelor. La control fiscal, ANAF validează exclusiv XML-ul.</li><li><strong>PDF-ul de vizualizare:</strong> generat automat din XML pentru lectură umană. Fără XML-ul corespondent, un PDF simplu de e-Factură nu are valoare fiscală deplină.</li></ul></div>
+<div class="plate"><h2><span class="num">02</span>Fluxul operațional de arhivare a e-facturilor</h2><div class="table-scroll"><table class="data"><tr><th>Etapă</th><th>Acțiune tehnică</th><th>Responsabil / soft</th></tr><tr><td><strong>1. Colectare</strong></td><td>Descărcarea fișierelor .xml și .pdf din SPV.</td><td>Administrator / Contabil</td></tr><tr><td><strong>2. Validare</strong></td><td>Verificarea sigiliului electronic al Ministerului Finanțelor.</td><td>Aplicații de validare / portal ANAF</td></tr><tr><td><strong>3. Stocare</strong></td><td>Organizare ierarhică clară (ex: AN/LUNA/).</td><td>Sistem DMS sau director local criptat</td></tr><tr><td><strong>4. Indexare</strong></td><td>Indexarea XML pentru căutare după CUI sau sume.</td><td>Motor de căutare (DocFetcher)</td></tr></table></div></div>
+<blockquote class="callout"><strong>Regulă contabilă:</strong> Perioada de păstrare obligatorie pentru facturile electronice (XML și PDF) e de 10 ani, calculată de la 1 ianuarie a anului următor celui în care au fost emise.</blockquote>
+<div class="src-note"><strong>Surse / de citit în plus:</strong> OUG 120/2021 și ghidurile ANAF pentru sistemul RO e-Factura / SPV.</div>
+
+</section>
+
+<section class="section" id="sup-2">
+<div class="eyebrow">Supliment · Modul 2 · Detaliu aprofundat</div>
+<h1 class="title">Managementul și arhivarea corespondenței e-mail</h1>
+<p class="lede">Negocieri comerciale, contracte la distanță și acceptarea unor comenzi se desfășoară în mare parte pe e-mail. Ignorarea acestor date în arhiva digitală e un risc juridic major.</p>
+<div class="grid-2"><div class="plate"><h2>Standarde de export (.eml / .msg)</h2><p style="color:var(--text-2);font-size:14px;">Pentru a fi folosite ca probe în instanță, e-mailurile nu se salvează ca simple capturi de ecran — se exportă în formate standardizate, care păstrează anteturile tehnice complete (IP-ul expeditorului, traseul serverelor SMTP, marcajul temporal oficial).</p></div>
+<div class="plate"><h2>Indexarea cu DocFetcher</h2><p style="color:var(--text-2);font-size:14px;">DocFetcher oferă suport nativ pentru indexarea e-mailurilor și a arhivelor Outlook (.pst) — cauți un cuvânt-cheie dintr-un contract negociat pe e-mail la fel de ușor ca într-un PDF clasic.</p></div>
+</div><div class="plate"><h2>Politica de retenție pentru mesageria electronică</h2><p style="color:var(--text-2);font-size:14.5px;">Nu păstra corespondența comercială la nesfârșit în căsuța online. Setează o procedură de descărcare trimestrială a mesajelor relevante în arhive locale securizate, cu aceleași reguli de nomenclatură ca la documentele scanate.</p></div>
+
+</section>
+
+<section class="section" id="sup-3">
+<div class="eyebrow">Supliment · Modul 3 · Detaliu aprofundat</div>
+<h1 class="title">Ghid de troubleshooting și corectare OCR</h1>
+<p class="lede">OCR-ul nu e infailibil. Documentele istorice, hârtia degradată sau scrisul de mână generează frecvent erori de interpretare care cer intervenție tehnică.</p>
+<div class="timeline">
+<div class="tl-item"><div class="yr">Problema 1</div><h2>Diacritice incorecte sau lipsă</h2><p><strong>Cauză:</strong> pachetul lingvistic al motorului OCR nu a inclus limba română. <strong>Soluție:</strong> reconfigurează setările OCR, selectând explicit Română (ron) și Engleză (eng) înainte de procesare.</p></div>
+
+<div class="tl-item"><div class="yr">Problema 2</div><h2>Fundal murdar sau contrast slab</h2><p><strong>Cauză:</strong> hârtia veche are pete galbene sau cerneală străpunsă de pe pagina opusă. <strong>Soluție:</strong> folosește Binarizare (Black and White) din ScanTailor, ca să cureți fundalul și să forțezi textul la un negru pur.</p></div>
+
+<div class="tl-item"><div class="yr">Problema 3</div><h2>Tabele complexe sau fonturi gotice</h2><p><strong>Cauză:</strong> liniile tabelelor derutează algoritmul de aliniere pe rânduri. <strong>Soluție:</strong> corectare manuală a stratului de text invizibil, sau creșterea rezoluției de scanare la 400 DPI pentru acele pagini.</p></div>
+</div>
+
+</section>
+
+<section class="section" id="sup-4">
+<div class="eyebrow">Supliment · Modul 4 · Detaliu aprofundat</div>
+<h1 class="title">Planul de backup automat — regula 3-2-1</h1>
+<p class="lede">O arhivă digitală perfectă e inutilă dacă un incident hardware sau un atac cibernetic distruge munca într-o secundă.</p>
+<div class="grid-2"><div class="plate"><h2>Arhitectura tehnică a backup-ului</h2><p style="color:var(--text-2);font-size:14px;">Un sistem robust nu se bazează pe copiere manuală ocazională. Utilitare de sincronizare incrementală (Duplicati, Cobian Backup) rulează în fundal în fiecare noapte, salvând doar fișierele nou-modificate.</p></div>
+<div class="plate"><h2>Izolarea fizică (cold storage)</h2><p style="color:var(--text-2);font-size:14px;">Pentru protecție totală față de ransomware (care criptează tot ce găsește în rețea), cel puțin o copie trebuie ținută pe un mediu fizic deconectat permanent de la internet — un hard disk extern, scos din port după backup.</p></div>
+</div><blockquote class="callout warn"><strong>Testul de restaurare:</strong> Un backup netestat prin restaurare efectivă e considerat inexistent. Testează lunar recuperarea a 2-3 fișiere aleatorii din arhivă.</blockquote>
+<div class="src-note"><strong>Surse / de citit în plus:</strong> conceptul „3-2-1 backup rule”, popularizat de US-CERT/CISA.</div>
+
+</section>
+
+<section class="section" id="sup-5">
+<div class="eyebrow">Supliment · Modul 5 · Detaliu aprofundat</div>
+<h1 class="title">Partajarea securizată a datelor cu terți</h1>
+<p class="lede">Transmiterea arhivei financiare către contabil, auditor sau parteneri externi cere măsuri stricte, pentru GDPR și pentru a preveni scurgerea de informații confidențiale.</p>
+<div class="plate"><h2><span class="num">01</span>Criptarea arhivelor cu AES-256</h2><p style="color:var(--text-2);font-size:14.5px;">Înainte de a trimite volume mari de documente prin internet, comprimă-le într-o arhivă securizată (7-Zip, open-source) și activează criptarea AES-256.</p></div>
+<div class="plate"><h2><span class="num">02</span>Reguli de igienă a transmisiei</h2><ul style="color:var(--text-2);font-size:14px;line-height:1.7;margin:0;padding-left:20px;"><li><strong>Canale alternative pentru parole:</strong> parola de deblocare nu se trimite niciodată pe același e-mail cu arhiva criptată — foloseşte un canal secundar (telefon, SMS).</li><li><strong>Linkuri cu auto-distrugere:</strong> pe platforme cloud, setează expirarea link-ului la maximum 24-48 de ore.</li><li><strong>Minimizarea datelor (GDPR):</strong> trimite doar strictul necesar, fără să expui alte dosare adiacente din arhivă.</li></ul></div>
+<blockquote class="callout"><strong>Concluzie generală:</strong> Scanarea e doar primul pas. Un proces de digitalizare complet și profesionist acoperă tot ciclul: captură optică corectă, indexare inteligentă, protecție fiscală, backup riguros și partajare în siguranță.</blockquote>
+
+</section>
+
+<section class="section" id="resurse">
+<div class="eyebrow">Resurse</div>
+<h1 class="title">Softuri necesare — de unde le descarci</h1>
+<p class="lede">Toate softurile folosite la workshop sunt cu sursă deschisă — se descarcă gratuit, fără obligații financiare. Excepție: PDF24, care nu e open-source, dar e gratuit de folosit.</p>
+<ul class="res-list"><li><div class="rn">Czur</div><a href="https://www.czur.com/support" target="_blank" rel="noopener">https://www.czur.com/support</a><div class="note">Se activează doar cu modelul de scaner achiziționat, pe baza serialului fizic. Nu se cere la curs — ar însemna obligativitatea achiziționării scanerului.</div></li><li><div class="rn">PDF24</div><a href="https://tools.pdf24.org/en/creator" target="_blank" rel="noopener">https://tools.pdf24.org/en/creator</a><div class="note">Editare, export și OCR-izare PDF.</div></li><li><div class="rn">ScanTailor (experimental)</div><a href="https://github.com/ImageProcessing-ElectronicPublications/scantailor-experimental/releases" target="_blank" rel="noopener">https://github.com/ImageProcessing-ElectronicPublications/scantailor-experimental/releases</a><div class="note">Curățare și prelucrare avansată a fotografiilor scanate.</div></li><li><div class="rn">NAPS2 / ImageToPDF</div><a href="https://www.naps2.com/download" target="_blank" rel="noopener">https://www.naps2.com/download</a><div class="note">Introducerea și revizia finală a fotografiilor prelucrate.</div></li><li><div class="rn">Folder2ISO</div><a href="https://www.softpedia.com/get/CD-DVD-Tools/CD-DVD-Images-Utils/Folder2ISO.shtml" target="_blank" rel="noopener">https://www.softpedia.com/get/CD-DVD-Tools/CD-DVD-Images-Utils/Folder2ISO.shtml</a><div class="note">Arhivare ISO a folderelor structurate.</div></li><li><div class="rn">DocFetcher</div><a href="https://docfetcher.sourceforge.io/download/" target="_blank" rel="noopener">https://docfetcher.sourceforge.io/download/</a><div class="note">Căutare full-text offline în arhiva digitalizată.</div></li><li><div class="rn">OnlyOffice</div><a href="https://www.onlyoffice.com/download-desktop" target="_blank" rel="noopener">https://www.onlyoffice.com/download-desktop</a><div class="note">Creare formulare PDF completabile.</div></li><li><div class="rn">7-Zip</div><a href="https://www.7-zip.org/" target="_blank" rel="noopener">https://www.7-zip.org/</a><div class="note">Compresie și criptare de arhive.</div></li><li><div class="rn">Adobe Acrobat Reader</div><a href="https://get.adobe.com/reader/" target="_blank" rel="noopener">https://get.adobe.com/reader/</a><div class="note">Citire, completare și semnare de documente PDF.</div></li></ul><div class="plate"><h2>Recomandare suplimentară a instructorului</h2><p style="color:var(--text-2);font-size:14px;">Merită încercată o lună licența <a href="https://pdf.abbyy.com/pricing/" target="_blank" rel="noopener">ABBYY FineReader</a> — standardul în citire OCR (neobligatoriu), recomandat pentru testare și învățarea funcționalităților, la un preț de până în 90 lei/lună. Foarte bun pentru OCR pe volume mari, cu grafice și tabele complexe. Demonstrat practic la Atelierul din Zi 3.</p></div>
+
+</section>
+
+<section class="section" id="concursuri">
+<div class="eyebrow">Propunere pentru consiliu</div>
+<h1 class="title">Concursuri propuse</h1>
+<p class="lede">Concursurile astea rup ritmul teoretic al cursului și, în același timp, arată clar — și distractiv — cât de bine s-au fixat competențele practice.</p>
+<div class="game-card"><h2>1 · Vânătorul de Coduri, cu DocFetcher &amp; Regex</h2><div class="gk">Bazat pe căutare avansată și expresii regulate</div><p>Participanții primesc o arhivă locală de test, plină de mii de fișiere PDF și facturi fictive. Au la dispoziție 3 minute să găsească un document specific a cărui serie exactă n-o știu — cunosc doar șablonul (ex: un cod de tipul <code>/\b[A-Z]{2}\d{5}\b/</code> sau o căutare booleană complexă).</p></div><div class="game-card"><h2>2 · Arhitectul de Formulare — OnlyOffice Speed Run</h2><div class="gk">Bazat pe formulare interactive și fișiere .oform</div><p>Fiecare cursant primește un contract sau o cerere clasică, în format text simplu (.docx). Provocarea: în cel mai scurt timp, să transforme documentul într-un formular interactiv completabil, cu câmpuri text, liste derulante, casete de selectare și câmp de semnătură.</p></div><div class="game-card"><h2>3 · Maestrul Curățării OCR și al Minimizării</h2><div class="gk">Bazat pe fluxul de pregătire, curățare în ScanTailor și conversie PDF24</div><p>Participanții primesc o fotografie scanată dificilă — o pagină veche, înclinată, cu umbre și fundal gri. Sarcina: să o treacă prin ScanTailor și PDF24, obținând un PDF final perfect aliniat, alb-negru curat, cu diacritice recunoscute 100% prin OCR, la cea mai mică dimensiune posibilă pe disc.</p></div>
+</section>
+
+<section class="section" id="evaluare">
+<div class="eyebrow">Evaluare & examinare</div>
+<h1 class="title">Evaluare practică & formular de feedback</h1>
+<p class="lede">După cele 10 zile de curs, workshopul se încheie cu 3 zile de evaluare practică, față în față, urmate de un formular de feedback pentru cursanți.</p>
+<h2>Cele 3 zile de evaluare practică</h2><div class="timeline">
+<div class="tl-item"><div class="yr">Zi 1 fizic</div><h2>Test &amp; probă de scanare</h2><p>1. Test cu 20 de întrebări grilă. 2. Probă practică de scanat documente.</p></div>
+
+<div class="tl-item"><div class="yr">Zi 2 fizic</div><h2>Fluxul 1 &amp; flux individual</h2><p>De parcurs Fluxul 1 pentru fișe JPG date. De creat un flux individual, în funcție de scenariul dat de instructor. Se desfășoară și unul dintre concursurile propuse.</p></div>
+
+<div class="tl-item"><div class="yr">Zi 3 fizic</div><h2>ABBYY FineReader vs. Czur, &amp; evaluare finală</h2><p>Demonstrație practică a softului ABBYY FineReader versus Czur, pentru digitalizare de carte. Discuții libere și întrebări despre utilizarea softurilor. Evaluarea finală a workshopului.</p></div>
+</div>
+<h2 style="margin-top:30px;">Formular de feedback pentru cursanți</h2><p style="color:var(--text-2);font-size:14px;">Notă de la 1 la 10 (10 = maxim), completat anonim.</p><div class="eval-item"><div class="en">Utilitatea generală</div><div class="eq">Cât de utile au fost informațiile și instrumentele prezentate pentru activitatea dumneavoastră profesională curentă (PFA, SRL sau ONG)?</div><div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div><div class="eval-item"><div class="en">Calitatea predării</div><div class="eq">Cum apreciați claritatea, ritmul și stilul de predare al instructorului, în explicarea noțiunilor teoretice și tehnice?</div><div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div><div class="eval-item"><div class="en">Aplicabilitatea practică</div><div class="eq">În ce măsură exercițiile practice (scanarea, procesarea OCR, căutarea cu DocFetcher) v-au oferit încredere să le aplicați singur?</div><div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div><div class="eval-item"><div class="en">Structura materialelor</div><div class="eq">Cât de bine structurate și ușor de urmărit au fost materialele suport, prezentările și exemplele practice?</div><div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div><div class="eval-item"><div class="en">Fluxuri &amp; fiscalitate</div><div class="eq">Cât de clar a fost explicată integrarea fluxurilor de documente digitale cu cerințele fiscale actuale (RO e-Factura, SPV)?</div><div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div><div class="eval-item"><div class="en">Securitate &amp; backup</div><div class="eq">Cât de bine au fost clarificate securitatea datelor, criptarea pe dispozitive externe și regula de backup 3-2-1?</div><div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div><div class="eval-item"><div class="en">Interactivitate &amp; suport</div><div class="eq">Ați primit un răspuns satisfăcător, clar și aplicat la întrebările sau blocajele întâmpinate în demonstrațiile practice?</div><div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div><div class="eval-item"><div class="en">Gradul de recomandare (NPS)</div><div class="eq">Cât de probabil este să recomandați acest curs altor antreprenori sau colegi din sectorul asociativ?</div><div class="scale"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div></div>
+</section>
+
+  </main>
+</div>
+
+<script>
+'use strict';
+function normalizeRo(s){
+  return String(s||'').toLowerCase()
+    .replace(/[ăâ]/g,'a').replace(/î/g,'i').replace(/ș/g,'s').replace(/ț/g,'t').replace(/é/g,'e');
+}
+
+function closeMobileMenu(){
+  var sb = document.getElementById('sidebar');
+  var bd = document.getElementById('backdrop');
+  var menuBtn = document.getElementById('menuToggle');
+  if(sb && sb.classList.contains('open')){
+    sb.classList.remove('open');
+    if(bd){ bd.classList.remove('show'); bd.hidden = true; }
+    if(menuBtn) menuBtn.setAttribute('aria-expanded','false');
+  }
+}
+
+function goToSection(id, moveFocus){
+  var target = document.getElementById(id);
+  if(!target || !target.classList.contains('section')) return false;
+
+  var sections = document.querySelectorAll('.section');
+  for(var i=0; i<sections.length; i++){ sections[i].classList.remove('active'); }
+  target.classList.add('active');
+
+  var navitems = document.querySelectorAll('.navitem');
+  for(var j=0; j<navitems.length; j++){
+    var isMatch = navitems[j].dataset.section === id;
+    navitems[j].classList.toggle('active', isMatch);
+    if(isMatch){ navitems[j].setAttribute('aria-current','page'); }
+    else{ navitems[j].removeAttribute('aria-current'); }
+  }
+
+  var mc = document.getElementById('mainContent');
+  if(mc) mc.scrollTop = 0;
+  window.scrollTo({top:0,behavior:'instant' in document.documentElement.style ? 'instant':'auto'});
+  closeMobileMenu();
+
+  if(moveFocus){
+    var heading = target.querySelector('.title');
+    if(heading){
+      if(!heading.hasAttribute('tabindex')) heading.setAttribute('tabindex','-1');
+      heading.focus();
+    }
+  }
+  return true;
+}
+
+function idFromHash(){
+  return (location.hash || '').replace(/^#/, '');
+}
+
+function applyEmptySearchState(){
+  var groups = document.querySelectorAll('.navgroup');
+  var anyVisible = false;
+  for(var g=0; g<groups.length; g++){
+    var items = groups[g].querySelectorAll('.navitem');
+    var groupHasVisible = false;
+    for(var k=0; k<items.length; k++){
+      if(items[k].style.display !== 'none'){ groupHasVisible = true; break; }
+    }
+    var label = groups[g].querySelector('.navgroup-label');
+    if(label) label.style.display = groupHasVisible ? '' : 'none';
+    if(groupHasVisible) anyVisible = true;
+  }
+  var empty = document.getElementById('emptyState');
+  if(empty) empty.hidden = anyVisible;
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  // navigare: hash-ul e sursa de adevar (functioneaza si fara JS, prin :target)
+  var initialId = idFromHash() || 'acasa';
+  goToSection(initialId, false);
+
+  window.addEventListener('hashchange', function(){
+    goToSection(idFromHash(), true);
+  });
+
+  // Space activeaza link-urile de navigare, la fel ca un buton (Enter functioneaza deja nativ)
+  var clickable = document.querySelectorAll('.navitem, .day-card');
+  for(var i=0; i<clickable.length; i++){
+    clickable[i].addEventListener('keydown', function(e){
+      if(e.key === ' ' || e.code === 'Space'){
+        e.preventDefault();
+        location.hash = '#' + this.dataset.section;
+      }
+    });
+  }
+
+  // meniu mobil
+  var menuBtn = document.getElementById('menuToggle');
+  var sidebar = document.getElementById('sidebar');
+  var backdrop = document.getElementById('backdrop');
+  if(menuBtn && sidebar){
+    menuBtn.addEventListener('click', function(){
+      var open = sidebar.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open?'true':'false');
+      if(backdrop){ backdrop.hidden = !open; backdrop.classList.toggle('show', open); }
+      if(open) sidebar.querySelector('#navSearch').focus();
+    });
+  }
+  if(backdrop){
+    backdrop.addEventListener('click', closeMobileMenu);
+  }
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && sidebar && sidebar.classList.contains('open')){
+      closeMobileMenu();
+      if(menuBtn) menuBtn.focus();
+    }
+  });
+
+  // cautare
+  var navSearch = document.getElementById('navSearch');
+  if(navSearch){
+    navSearch.addEventListener('input', function(){
+      var q = normalizeRo(navSearch.value.trim());
+      var items = document.querySelectorAll('.navitem');
+      for(var m=0; m<items.length; m++){
+        var item = items[m];
+        var match = !q || normalizeRo(item.textContent).indexOf(q) !== -1;
+        item.style.display = match ? '' : 'none';
+      }
+      applyEmptySearchState();
+    });
+  }
+
+  // tema
+  var themeToggle = document.getElementById('themeToggle');
+  var themeLabel = document.getElementById('themeLabel');
+  var themeIconSun = 'M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 7a5 5 0 100 10 5 5 0 000-10z';
+  var themeIconMoon = 'M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z';
+  if(themeToggle){
+    themeToggle.addEventListener('click', function(){
+      var html = document.documentElement;
+      var isNight = html.getAttribute('data-theme')!=='day';
+      html.setAttribute('data-theme', isNight?'day':'night');
+      themeLabel.textContent = isNight ? 'Regim de noapte' : 'Regim de zi';
+      themeToggle.setAttribute('aria-pressed', isNight ? 'true' : 'false');
+      document.getElementById('themeIcon').innerHTML = '<path d="'+(isNight?themeIconSun:themeIconMoon)+'"/>';
+    });
+  }
+});
+</script>
+</body>
+</html>
